@@ -1,0 +1,71 @@
+install.packages("readxl")
+
+library("readxl")
+
+data1 <- read_excel("/Users/KHALED/Desktop/data1.xlsx",
+                    1,na =c(" ","","N/A","NA"))
+
+str(data1)
+
+dput(names(data1))
+
+names(data1)<-c("ID de la réponse", "Date de soumission", "Dernière page", "Langue de départ",
+                "Tête de série", "Date de lancement", "Date de la dernière action", "...8", "ID :",
+                "Sexe du médecin traitant", "Date de la première consultation",
+                "Délais de prise en charge (mois)", "Délais de RDV (mois)", "Médecin adresseur",
+                "Pathologie liée au travail ? [AT]", "Pathologie liée au travail ? [AT: Commentaire]",
+                "Pathologie liée au travail ? [AT non reconnu]",
+                "Pathologie liée au travail ? [AT non reconnu : Commentaire]",
+                "Pathologie liée au travail ? [Autre]",
+                "Pathologie liée au travail ? [Autre : Commentaire]", "Sexe du médecin adresseur",
+                "Adressé par  [Rhumato]", "Quel est le diagnostique posé avant la consultation ?", 
+                "Nombre d'examens complémentaires : [Echographie]", "Nombre d'examens complémentaires : [Scanner]", 
+                "Nombre d'examens complémentaires : [IRM]", "Nombre d'examens complémentaires : [Scintigraphie]", 
+                "Nombre d'examens complémentaires : [radio]", "Nombre d'examens complémentaires : [Bio]", 
+                "Nombre d'examens complémentaires : [Biopsie]", "Type examen complementaire : [echo]", 
+                "Type examen complementaire : [echo : Commentaire]", "Type examen complementaire : [tdm]", 
+                "Type examen complementaire : [tdm: Commentaire]", "Type examen complementaire : [IRM]", 
+                "Type examen complementaire : [IRM: Commentaire]", "Nombre de consultations : [Chir rachis]", 
+                "Nombre de consultations : [Rhumato]", "Nombre de consultations : [Chir Ortho]", 
+                "Nombre de consultations : [Neuro]", "Nombre de consultations : [MPR]", 
+                "Nombre de consultations : [Onco]", "Nombre de consultations : [Neurochir]", 
+                "Nombre de consultations : [Interniste]", "Quel autre spécialiste consulté" )
+
+names(data1)<-make.names(names(data1))
+
+install.packages("dplyr")
+library(dplyr)
+
+data1<-data1%>%select(-c("ID.de.la.réponse", "Date.de.soumission", "Dernière.page", 
+                         "Langue.de.départ", "Tête.de.série", "Date.de.lancement", "Date.de.la.dernière.action", "...8"))
+
+data1$Sexe.du.médecin.traitant[which(data1$Sexe.du.médecin.traitant==45)]<-NA
+data1$Sexe.du.médecin.traitant[which(data1$Sexe.du.médecin.traitant=="f")]<-"Féminin"
+data1$Sexe.du.médecin.traitant[which(data1$Sexe.du.médecin.traitant=="Feminin")]<-"Féminin"
+data1$Sexe.du.médecin.traitant[which(data1$Sexe.du.médecin.traitant=="m")]<-"Masculin"
+
+data1$Délais.de.prise.en.charge..mois.<- as.numeric(data1$Délais.de.prise.en.charge..mois.)
+
+str(data1)
+dput(names(data1))
+
+data1[,c("Nombre.d.examens.complémentaires....Echographie.", "Nombre.d.examens.complémentaires....Scanner.", 
+         "Nombre.d.examens.complémentaires....IRM.", "Nombre.d.examens.complémentaires....Scintigraphie.", 
+         "Nombre.d.examens.complémentaires....radio.", "Nombre.d.examens.complémentaires....Bio.", 
+         "Nombre.d.examens.complémentaires....Biopsie.", "Nombre.de.consultations....Chir.rachis.", 
+         "Nombre.de.consultations....Rhumato.", "Nombre.de.consultations....Chir.Ortho.", 
+         "Nombre.de.consultations....Neuro.", "Nombre.de.consultations....MPR.", 
+         "Nombre.de.consultations....Onco.", "Nombre.de.consultations....Neurochir.", 
+         "Nombre.de.consultations....Interniste.")][is.na(data1[,c("Nombre.d.examens.complémentaires....Echographie.", "Nombre.d.examens.complémentaires....Scanner.", 
+                                                                                                      "Nombre.d.examens.complémentaires....IRM.", "Nombre.d.examens.complémentaires....Scintigraphie.", 
+                                                                                                      "Nombre.d.examens.complémentaires....radio.", "Nombre.d.examens.complémentaires....Bio.", 
+                                                                                                      "Nombre.d.examens.complémentaires....Biopsie.", "Nombre.de.consultations....Chir.rachis.", 
+                                                                                                      "Nombre.de.consultations....Rhumato.", "Nombre.de.consultations....Chir.Ortho.", 
+                                                                                                      "Nombre.de.consultations....Neuro.", "Nombre.de.consultations....MPR.", 
+                                                                                                      "Nombre.de.consultations....Onco.", "Nombre.de.consultations....Neurochir.", 
+                                                                                                      "Nombre.de.consultations....Interniste.")])]<-0
+
+
+write.csv2(data1,"/Users/KHALED/Desktop/basefinal.csv")
+
+
