@@ -1,3 +1,9 @@
+data1 = data1[-5,]
+names(data1)<-data1[-5,]
+data1[-5,]
+names(data1)<-c([-5,])
+
+
 # -Data
 
 # notion de vecteur
